@@ -61,7 +61,7 @@ end
 
 def starts_with_consonant? s
   # YOUR CODE HERE
-  if !!(s =~ /^[A-Z-[AEIOU]a-z-[aeiou]].*$/)
+  if !!(s =~ /^[a-zA-Z&&[^AEIOUaeiou]].*$/)
     return true
   end
   
@@ -70,10 +70,61 @@ end
 
 def binary_multiple_of_4? s
   # YOUR CODE HERE
+  # Are we considering 0*4 as a multiple of 4?
+  if !!(s =~ /^0{1,2}$/)
+    return true
+  end
+  
+  # Any binary number multiple of four should
+  # have at least one '1' and end on '00'
+  if !!(s =~ /1/)
+    if !!(s =~ /^[01]+00$/)
+      return true
+    end
+  end
+  
+  return false
 end
 
 # Part 3
 
 class BookInStock
 # YOUR CODE HERE
+  def initialize(isbn, price)
+    raise ArgumentError.new(
+      "Expected a non-empty string, got #{isbn}"
+    ) if isbn.length == 0
+    @isbn = isbn
+    
+    raise ArgumentError.new(
+      "Expected a positive number, got #{price}"
+    ) if price <= 0
+    @price = price
+  end
+  
+  def isbn
+    @isbn
+  end
+  
+  def isbn=(new_isbn)
+    @isbn = new_isbn
+  end
+  
+  def price
+    @price
+  end
+  
+  def price=(new_price)
+    @price=new_price
+  end
+  
+  def price_as_string
+    if (@price.is_a?(Integer))
+      return "$" + price.to_s + ".00"
+    else
+      temp = @price - @price.floor
+      return "$" + @price.floor.to_s + "." + (temp.to_s)[2..3]
+    end
+    
+  end
 end
